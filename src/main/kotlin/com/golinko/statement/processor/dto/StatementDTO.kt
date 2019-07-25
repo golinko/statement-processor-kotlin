@@ -32,5 +32,5 @@ class StatementDTO {
     val date: LocalDate? = null
 
     @AssertTrue(message = "not equals to sum of start balance and mutation")
-    private fun isEndBalance(): Boolean = startBalance!!.add(mutation).compareTo(endBalance) == 0
+    private fun isEndBalance(): Boolean = startBalance?.add(mutation)?.compareTo(endBalance) == 0
 }
