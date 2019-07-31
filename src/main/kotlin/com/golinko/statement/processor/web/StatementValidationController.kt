@@ -18,7 +18,7 @@ private val log = KotlinLogging.logger {}
 @RestController
 @RequestMapping(path = ["/validate"], produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
 @Api(value = "Statement Validation API")
-class StatementValidationController(val statementValidationService: StatementValidationService) {
+class StatementValidationController(private val statementValidationService: StatementValidationService) {
 
     @ApiOperation(value = "Validate uploaded data by mimeType", response = Set::class)
     @PostMapping("/{mimeType}")

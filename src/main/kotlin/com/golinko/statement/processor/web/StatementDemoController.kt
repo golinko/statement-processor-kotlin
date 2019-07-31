@@ -25,7 +25,7 @@ private val log = KotlinLogging.logger {}
 @RestController
 @RequestMapping(path = ["/demo"], produces = [MediaType.APPLICATION_JSON_UTF8_VALUE])
 @Api(value = "Demo Validation API")
-class StatementDemoController(val statementValidationService: StatementValidationService) {
+class StatementDemoController(private val statementValidationService: StatementValidationService) {
 
     @ApiOperation(value = "Validate demo data by mimeType", response = Set::class)
     @GetMapping("/{mimeType}")
