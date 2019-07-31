@@ -13,24 +13,24 @@ import javax.validation.constraints.PositiveOrZero
 
 @JsonPropertyOrder("reference", "accountNumber", "description", "startBalance", "mutation", "endBalance", "date")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class StatementDTO {
-    val reference: Long? = null
-    val accountNumber: String? = null
-    val description: String? = null
+data class StatementDTO(
+        val reference: Long,
+        val accountNumber: String,
+        val description: String,
 
-    @PositiveOrZero
-    val startBalance: BigDecimal? = null
+        @get:PositiveOrZero
+        val startBalance: BigDecimal,
 
-    val mutation: BigDecimal? = null
+        val mutation: BigDecimal,
 
-    @PositiveOrZero
-    val endBalance: BigDecimal? = null
+        @get:PositiveOrZero
+        val endBalance: BigDecimal,
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    @JsonDeserialize(converter = LocalDateConverter::class)
-    @PastOrPresent
-    val date: LocalDate? = null
+        @get:JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @get:JsonDeserialize(converter = LocalDateConverter::class)
+        @get:PastOrPresent
+        val date: LocalDate) {
 
     @AssertTrue(message = "not equals to sum of start balance and mutation")
-    private fun isEndBalance(): Boolean = startBalance?.add(mutation)?.compareTo(endBalance) == 0
+    fun isEndBalance() = startBalance.add(mutation).compareTo(endBalance) == 0
 }

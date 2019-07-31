@@ -15,17 +15,18 @@ private val log = KotlinLogging.logger {}
 @Component
 class XMLStatementReader(
         @Value("\${demo.xml:classpath:records.xml}")
-        override val demoData: Resource) : StatementReader {
+        override val demoData: Resource,
+        private val xmlMapper: XmlMapper) : StatementReader {
 
     override fun read(reader: Reader): List<StatementDTO> {
         log.debug("read()")
         try {
-            return XmlMapper()
+            return xmlMapper
                     .readerFor(StatementDTO::class.java)
                     .readValues<StatementDTO>(reader)
                     .readAll()
         } catch (e: Exception) {
-            log.error("Error during xml file read")
+            log.error("Error during xml file read", e)
             throw StatementProcessorException("Error during xml file read")
         }
     }

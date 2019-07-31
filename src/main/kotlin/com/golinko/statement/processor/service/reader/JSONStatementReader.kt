@@ -6,7 +6,6 @@ import com.golinko.statement.processor.dto.MimeType
 import com.golinko.statement.processor.dto.StatementDTO
 import com.golinko.statement.processor.exceptions.StatementProcessorException
 import mu.KotlinLogging
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.core.io.Resource
 import org.springframework.stereotype.Component
@@ -18,8 +17,6 @@ private val log = KotlinLogging.logger {}
 class JSONStatementReader(
         @Value("\${demo.json:classpath:records.json}")
         override val demoData: Resource,
-
-        @Qualifier("objectMapper")
         private val objectMapper: ObjectMapper) : StatementReader {
 
     override fun read(reader: Reader): List<StatementDTO> {
@@ -27,7 +24,7 @@ class JSONStatementReader(
         try {
             return objectMapper.readValue(reader, object : TypeReference<List<StatementDTO>>() {})
         } catch (e: Exception) {
-            log.error("Error during json file read")
+            log.error("Error during json file read", e)
             throw StatementProcessorException("Error during json file read")
         }
     }

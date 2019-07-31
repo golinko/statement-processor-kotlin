@@ -31,7 +31,7 @@ class StatementValidationService(val statementReaders: List<StatementReader>) {
 
         statements
                 .groupBy { it.reference }
-                .forEach { reference, list ->
+                .forEach { (reference, list) ->
                     val dto = StatementValidationDTO(reference)
                     validateUniqueness(list, dto)
                     list.forEach { validateStatement(it, dto, validator) }
