@@ -16,11 +16,12 @@ private val log = KotlinLogging.logger {}
 @Component
 class CSVStatementReader(
         @Value("\${demo.csv:classpath:records.csv}")
-        override val demoData: Resource) : StatementReader {
+        override val demoData: Resource,
+        private val csvMapper: CsvMapper) : StatementReader {
 
     override fun read(reader: Reader): List<StatementDTO> {
         log.debug("read()")
-        val mapper = CsvMapper().enable(CsvParser.Feature.TRIM_SPACES)
+        val mapper = csvMapper.enable(CsvParser.Feature.TRIM_SPACES)
         val bootstrapSchema = mapper
                 .typedSchemaFor(StatementDTO::class.java)
                 .withHeader()
@@ -33,7 +34,7 @@ class CSVStatementReader(
                     .readValues<StatementDTO>(reader)
                     .readAll()
         } catch (e: Exception) {
-            log.error("Error during csv file read")
+            log.error("Error during csv file read", e)
             throw StatementProcessorException("Error during csv file read")
         }
     }
